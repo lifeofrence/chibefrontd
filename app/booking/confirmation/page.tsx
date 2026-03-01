@@ -56,7 +56,7 @@ export default function BookingConfirmationPage() {
     if (navigator.share) {
       navigator.share({
         title: "Hotel Booking Confirmation",
-        text: `Booking confirmed at Nicon Luxury Hotel - ${booking.id}`,
+        text: `Booking confirmed at CHIBEN LEISURE HOTELS - ${booking.id}`,
         url: window.location.href,
       })
     } else {
@@ -77,7 +77,7 @@ export default function BookingConfirmationPage() {
           </div>
           <h1 className="font-heading text-3xl font-bold text-green-800 mb-2">Booking Confirmed!</h1>
           <p className="text-muted-foreground text-lg">
-            Thank you for choosing Nicon Luxury Hotel. Your reservation has been confirmed.
+            Thank you for choosing CHIBEN LEISURE HOTELS. Your reservation has been confirmed.
           </p>
         </div>
 
@@ -210,7 +210,7 @@ export default function BookingConfirmationPage() {
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="font-medium">Nicon Luxury Hotel Abuja</p>
+                    <p className="font-medium">CHIBEN LEISURE HOTELS Abuja</p>
                     <p className="text-sm text-muted-foreground">
                       Plot 903, Tafawa Balewa Way, Central Business District, Abuja, Nigeria
                     </p>
@@ -222,7 +222,7 @@ export default function BookingConfirmationPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">info@niconluxury.com</span>
+                  <span className="text-sm">info@chibenhotels.com</span>
                 </div>
               </div>
               <div className="space-y-3">

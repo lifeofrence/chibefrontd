@@ -2,7 +2,7 @@
 
 import { getAuthToken } from '../auth-actions'
 
-const API_URL = process.env.NEXT_PUBLIC_API_BASE || process.env.NEXT_PUBLIC_API_URL || 'https://niconluxury.jubileesystem.com'
+const API_URL = process.env.NEXT_PUBLIC_API_BASE || process.env.NEXT_PUBLIC_API_URL || 'https://backend.chibenhotels.com'
 
 export async function sendEmailToGuest(bookingId: number, subject: string, message: string) {
     const token = await getAuthToken()

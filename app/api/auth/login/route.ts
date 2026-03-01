@@ -6,7 +6,7 @@ export async function POST(request: Request) {
         const { email, password } = await request.json()
 
         // Call Laravel Backend
-        const backendUrl = process.env.NEXT_PUBLIC_API_BASE || process.env.NEXT_PUBLIC_API_URL || 'https://niconluxury.jubileesystem.com';
+        const backendUrl = process.env.NEXT_PUBLIC_API_BASE || process.env.NEXT_PUBLIC_API_URL || 'https://backend.chibenhotels.com';
         const res = await fetch(`${backendUrl}/api/auth/login`, {
             method: 'POST',
             headers: {

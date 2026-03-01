@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers'
 
-const API_URL = process.env.NEXT_PUBLIC_API_BASE || process.env.NEXT_PUBLIC_API_URL || 'https://niconluxury.jubileesystem.com'
+const API_URL = process.env.NEXT_PUBLIC_API_BASE || process.env.NEXT_PUBLIC_API_URL || 'https://backend.chibenhotels.com'
 
 export async function getAuthToken() {
     const cookieStore = await cookies()

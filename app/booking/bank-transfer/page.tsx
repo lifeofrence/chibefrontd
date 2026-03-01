@@ -15,7 +15,7 @@ export default function BankTransferPage() {
   const transferDetails = {
     reference: reference || "REF123456789",
     amount: 483750,
-    accountName: "Nicon Luxury Hotel Limited",
+    accountName: "CHIBEN LEISURE HOTELS Limited",
     accountNumber: "0123456789",
     bankName: "First Bank of Nigeria",
     sortCode: "011",
@@ -270,9 +270,9 @@ export default function BankTransferPage() {
                 </Link>
               </Button>
               <Button variant="outline" asChild>
-                <Link href="mailto:bookings@niconluxury.com" className="flex items-center gap-2">
+                <Link href="mailto:bookings@chibenhotels.com" className="flex items-center gap-2">
                   <Mail className="h-4 w-4" />
-                  Email: bookings@niconluxury.com
+                  Email: bookings@chibenhotels.com
                 </Link>
               </Button>
               <Button variant="outline" asChild>

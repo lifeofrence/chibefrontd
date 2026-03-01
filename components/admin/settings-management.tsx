@@ -21,10 +21,10 @@ export function SettingsManagement({ initialSettings }: SettingsManagementProps)
     const [loading, setLoading] = useState(false)
     const [settings, setSettings] = useState({
         // Hotel Information
-        hotel_name: getSettingValue(initialSettings, 'hotel_name', 'NICON Luxury Hotel'),
+        hotel_name: getSettingValue(initialSettings, 'hotel_name', 'CHIBEN LEISURE HOTELS'),
         hotel_address: getSettingValue(initialSettings, 'hotel_address', 'Abuja, Nigeria'),
         hotel_phone: getSettingValue(initialSettings, 'hotel_phone', '+234 XXX XXX XXXX'),
-        hotel_email: getSettingValue(initialSettings, 'hotel_email', 'info@niconluxury.com'),
+        hotel_email: getSettingValue(initialSettings, 'hotel_email', 'info@chibenhotels.com'),
         hotel_description: getSettingValue(initialSettings, 'hotel_description', ''),
 
         // Booking Settings
@@ -43,7 +43,7 @@ export function SettingsManagement({ initialSettings }: SettingsManagementProps)
         // Email Notifications
         enable_booking_emails: getSettingValue(initialSettings, 'enable_booking_emails', 'true') === 'true',
         enable_cancellation_emails: getSettingValue(initialSettings, 'enable_cancellation_emails', 'true') === 'true',
-        admin_notification_email: getSettingValue(initialSettings, 'admin_notification_email', 'admin@niconluxury.com'),
+        admin_notification_email: getSettingValue(initialSettings, 'admin_notification_email', 'admin@chibenhotels.com'),
 
         // Social Media
         facebook_url: getSettingValue(initialSettings, 'facebook_url', ''),

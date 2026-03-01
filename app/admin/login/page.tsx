@@ -49,7 +49,7 @@ export default function AdminLoginPage() {
                     <div className="flex justify-center mb-4">
                         <img
                             src="/NICON_Luxury.png"
-                            alt="NICON Luxury Hotel"
+                            alt="CHIBEN LEISURE HOTELS Hotel"
                             className="h-20 w-auto"
                         />
                     </div>

@@ -97,7 +97,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             </Avatar>
             <Link href="/admin" className="flex items-center">
               <div className="font-heading text-xl font-bold text-primary">
-                NICON LUXURY
+                CHIBEN LEISURE
                 <span className="text-accent ml-1">ADMIN</span>
               </div>
             </Link>
@@ -144,7 +144,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                   </Avatar>
                   <div>
                     <p className="text-sm font-medium">{currentUser?.name || 'Admin User'}</p>
-                    <p className="text-xs text-muted-foreground">{currentUser?.email || 'admin@niconluxury.com'}</p>
+                    <p className="text-xs text-muted-foreground">{currentUser?.email || 'admin@chibenhotels.com'}</p>
                   </div>
                 </button>
               </DropdownMenuTrigger>

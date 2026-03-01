@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'niconluxury.jubileesystem.com',
+        hostname: 'backend.chibenhotels.com',
         pathname: '/**',
       },
       {
