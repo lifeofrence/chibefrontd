@@ -66,7 +66,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-4">
                 <Mail className="h-5 w-5 text-secondary shrink-0" />
-                <span className="text-white/70 text-sm">info@chibenleisurehotels.com</span>
+                <span className="text-white/70 text-sm">info@chibenhotels.com</span>
               </div>
             </div>
           </div>

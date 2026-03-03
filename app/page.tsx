@@ -332,14 +332,18 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="mt-16 pt-10 border-t border-secondary/20 flex flex-wrap gap-10 md:gap-16">
+              <div className="mt-16 pt-10 border-t border-secondary/20 grid grid-cols-2 lg:grid-cols-4 gap-10">
                 <div className="flex flex-col">
                   <span className="text-4xl font-heading font-bold text-primary">100+</span>
                   <span className="text-[10px] uppercase tracking-[0.2em] text-secondary font-bold mt-1">Luxury Rooms</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-4xl font-heading font-bold text-primary">1</span>
+                  <span className="text-4xl font-heading font-bold text-primary">2</span>
                   <span className="text-[10px] uppercase tracking-[0.2em] text-secondary font-bold mt-1">Banquet Halls</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-4xl font-heading font-bold text-primary">2</span>
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-secondary font-bold mt-1">Conference Rooms</span>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-4xl font-heading font-bold text-primary">24/7</span>

@@ -389,13 +389,13 @@ export default function RoomsPage() {
 
                     {/* Action Buttons */}
                     <div className="flex gap-2">
-                      <Button
+                      {/* <Button
                         asChild
                         variant="outline"
                         className="flex-1 bg-transparent"
                       >
                         <Link href={`/rooms/${room.id}`}>View Details</Link>
-                      </Button>
+                      </Button> */}
                       <Button
                         asChild
                         className="flex-1"

@@ -568,7 +568,7 @@ export default function BookingPage() {
           <div className="relative z-10 text-center text-white px-4">
             <h1 className="font-heading text-4xl md:text-6xl font-bold mb-4 italic tracking-tight">Reserve Your Room</h1>
             <p className="font-sans text-lg md:text-xl text-white/80 max-w-2xl mx-auto uppercase tracking-[0.2em] text-xs font-bold">
-              Chiben Leisure Hotels & Hotel Limited
+              Chiben Leisure Resort & hotels Limited
             </p>
           </div>
         </section>
