@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -68,10 +68,13 @@ export default function BookingPage() {
   const checkInParam = searchParams.get("checkIn") ?? ""
   const checkOutParam = searchParams.get("checkOut") ?? ""
   const guestsParam = searchParams.get("guests")
-  const [paymentMethod, setPaymentMethod] = useState("card")
+  const successParam = searchParams.get("success")
+  const bookingIdParam = searchParams.get("booking_id")
+  const [paymentMethod, setPaymentMethod] = useState("hotel")
   const [isProcessing, setIsProcessing] = useState(false)
   type Notice = { type: "error" | "success" | "info"; message: string } | null
   const [notice, setNotice] = useState<Notice>(null)
+  const apiBase = useMemo(() => process.env.NEXT_PUBLIC_API_BASE?.replace(/\/$/, "") || "", [])
   type ServerBooking = {
     id: number
     guest_name: string
@@ -300,6 +303,42 @@ export default function BookingPage() {
     }
   }, [checkInParam, checkOutParam, guestsParam])
 
+  // handle redirect from Paystack callback with ?success=1&booking_id=X
+  useEffect(() => {
+    if (successParam === "1" && bookingIdParam) {
+      const fetchBooking = async () => {
+        try {
+          const res = await fetch(`${apiBase}/api/bookings/${bookingIdParam}`, { cache: "no-store" })
+          if (!res.ok) throw new Error("Failed to fetch booking")
+          const data = await res.json()
+          setServerBooking(data)
+          setIsSuccessDialogOpen(true)
+          setNotice({ type: "success", message: "Payment successful! Your booking is confirmed." })
+        } catch {
+          setNotice({ type: "error", message: "Could not load booking details. Please contact support." })
+        }
+      }
+      fetchBooking()
+    }
+  }, [successParam, bookingIdParam, apiBase])
+
+  useEffect(() => {
+    if (successParam === "0" && bookingIdParam) {
+      const fetchBooking = async () => {
+        try {
+          const res = await fetch(`${apiBase}/api/bookings/${bookingIdParam}`, { cache: "no-store" })
+          if (!res.ok) return
+          const data = await res.json()
+          setServerBooking(data)
+          setIsSuccessDialogOpen(true)
+        } catch {
+          // silent
+        }
+      }
+      fetchBooking()
+    }
+  }, [successParam, bookingIdParam, apiBase])
+
   const selectedRoomData = uiRooms.find((room) => room.id === selectedRoom)
   const nights =
     bookingData.checkIn && bookingData.checkOut
@@ -327,14 +366,24 @@ export default function BookingPage() {
     if (step > 1) setStep(step - 1)
   }
 
+  const initiatePaystackPayment = async (bookingId: number) => {
+    const res = await fetch(`/api/payments/initiate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ booking_id: bookingId }),
+    })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      throw new Error(err.error || err.message || `Failed to initiate payment (${res.status})`)
+    }
+    return res.json()
+  }
+
   const handlePayment = async () => {
     setIsProcessing(true)
 
     try {
-      // build payload according to the API you tested
       const guestName = `${bookingData.firstName} ${bookingData.lastName}`.trim() || "Guest"
-      // map frontend selectedRoom to backend room_type_id
-      // IMPORTANT: ensure your frontend room IDs match backend room_type_id; if not, add mapping
       if (!selectedRoom) throw new Error("Please select a room first.")
       const room_type_id = selectedRoom as number
 
@@ -343,34 +392,40 @@ export default function BookingPage() {
         guest_name: guestName,
         guest_email: bookingData.email,
         guest_phone: bookingData.phone,
-        // Convert dates to DD-MM-YYYY format as backend expects
         check_in_date: toDDMMYYYY(bookingData.checkIn),
         check_out_date: toDDMMYYYY(bookingData.checkOut),
         status: "pending",
-        amount: Number((total).toFixed(2)), // adjust if API expects different unit
+        amount: Number((total).toFixed(2)),
         number_of_rooms: bookingData.rooms,
         special_requests: bookingData.specialRequests || undefined,
       }
 
       const apiResult = await createBooking(payload)
 
-      // Do not auto-initiate payment; capture booking info and show it inline
       const booking = apiResult.booking || null
-      setServerBooking(booking)
-      // Optionally, surface how many rooms were booked in the UI via alert
-      if (apiResult?.number_of_rooms) {
-        console.log(`Rooms booked: ${apiResult.number_of_rooms}`)
+
+      if (paymentMethod === "paystack") {
+        if (!booking?.id) {
+          throw new Error("Booking was created but no booking ID was returned. Cannot initiate payment.")
+        }
+        const payResult = await initiatePaystackPayment(booking.id)
+        if (payResult.authorization_url) {
+          window.location.href = payResult.authorization_url
+          return
+        }
+        throw new Error("No authorization URL returned from payment gateway")
       }
+
+      setServerBooking(booking)
       setNotice({ type: "success", message: "Booking created successfully!" })
-      setIsSuccessDialogOpen(true) // Open success popup
-      setStep(2) // keep user on details step
+      setIsSuccessDialogOpen(true)
+      setStep(2)
     } catch (error) {
       console.error("Booking/payment error:", error)
       let msg = "Booking failed. Please try again."
 
       if (error instanceof Error) {
         msg = error.message
-        // Check if it's a validation error with more details
         if (msg.includes("422") || msg.includes("validation")) {
           msg = "Please check your booking details. Some fields may be invalid or the room may not be available for the selected dates."
         }
@@ -1091,21 +1146,35 @@ export default function BookingPage() {
                             </div>
                           </label>
 
-                          {/* Bank Settlement (Offline for now) */}
-                          <div className="opacity-40 cursor-not-allowed grayscale pointer-events-none">
-                            <div className="flex items-center justify-between border-2 border-secondary/5 rounded-2xl p-6 bg-white/50">
-                              <div className="flex items-center gap-5">
-                                <div className="p-4 rounded-full bg-primary/5 text-primary/40">
-                                  <Building2 className="h-6 w-6" />
-                                </div>
-                                <div>
-                                  <span className="block font-heading text-xl font-bold italic text-primary/60">Direct Bank Settlement</span>
-                                  <p className="text-sm text-muted-foreground">Electronic transfer to our reserve accounts</p>
-                                </div>
+                          {/* Pay Online - Paystack */}
+                          <label
+                            className={`group flex items-center justify-between border-2 rounded-2xl p-6 cursor-pointer transition-all duration-300 ${paymentMethod === "paystack"
+                              ? "border-secondary bg-secondary/5 ring-1 ring-secondary"
+                              : "border-secondary/10 hover:border-secondary/30 bg-white"
+                              }`}
+                          >
+                            <input
+                              type="radio"
+                              name="paymentMethod"
+                              value="paystack"
+                              checked={paymentMethod === "paystack"}
+                              onChange={() => setPaymentMethod("paystack")}
+                              className="sr-only"
+                            />
+                            <div className="flex items-center gap-5">
+                              <div className={`p-4 rounded-full transition-colors ${paymentMethod === 'paystack' ? 'bg-secondary text-primary' : 'bg-primary/5 text-primary/40'}`}>
+                                <Building2 className="h-6 w-6" />
                               </div>
-                              <Badge variant="outline" className="text-[9px] uppercase tracking-tighter">Temporarily Offline</Badge>
+                              <div>
+                                <span className={`block font-heading text-xl font-bold italic ${paymentMethod === 'paystack' ? 'text-primary' : 'text-primary/60'}`}>Pay Online Now</span>
+                                <p className="text-sm text-muted-foreground">Card, Transfer, USSD — Powered by Paystack</p>
+                              </div>
                             </div>
-                          </div>
+                            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${paymentMethod === 'paystack' ? 'border-secondary bg-secondary' : 'border-secondary/20'
+                              }`}>
+                              {paymentMethod === 'paystack' && <div className="w-2 h-2 rounded-full bg-primary" />}
+                            </div>
+                          </label>
                         </div>
                       </div>
 
