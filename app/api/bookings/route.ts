@@ -15,7 +15,23 @@ export async function POST(request: NextRequest) {
             body: JSON.stringify(body),
         })
 
-        const data = await response.json()
+        const contentType = response.headers.get('content-type') || ''
+        let data: unknown
+
+        if (contentType.includes('application/json')) {
+            data = await response.json()
+        } else {
+            const text = await response.text()
+            console.error('Backend returned non-JSON:', {
+                status: response.status,
+                contentType,
+                body: text.slice(0, 500),
+            })
+            return NextResponse.json(
+                { error: 'Backend returned an invalid response', details: text.slice(0, 500) },
+                { status: 502 }
+            )
+        }
 
         if (!response.ok) {
             console.error('Backend API error:', {
@@ -23,7 +39,7 @@ export async function POST(request: NextRequest) {
                 data: data
             })
             return NextResponse.json(
-                { error: data.message || 'Booking failed', details: data },
+                { error: (data as Record<string, unknown>)?.message || 'Booking failed', details: data },
                 { status: response.status }
             )
         }
