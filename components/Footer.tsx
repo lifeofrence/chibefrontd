@@ -16,11 +16,15 @@ export default function Footer() {
               An unconventional boutique sanctuary in the heart of Awka. We redefine luxury through intimate service and meticulously curated spaces.
             </p>
             <div className="flex space-x-6">
-              {[Facebook, Instagram, Twitter, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="text-white/40 hover:text-secondary transition-all duration-300">
-                  <Icon className="h-5 w-5" />
-                </a>
-              ))}
+              <a href="https://twitter.com/hiltonleisure" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-secondary transition-all duration-300">
+                <Twitter className="h-5 w-5" />
+              </a>
+              <a href="https://www.instagram.com/hiltonleisurehotels/" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-secondary transition-all duration-300">
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a href="https://www.facebook.com/hiltonleisurehotel" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-secondary transition-all duration-300">
+                <Facebook className="h-5 w-5" />
+              </a>
             </div>
           </div>
 

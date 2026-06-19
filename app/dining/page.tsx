@@ -1,8 +1,18 @@
+import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Clock, MapPin } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: "Dining",
+  description: "Experience exceptional dining at Chiben Leisure Hotels. Mediterranean restaurant, pool bar, and room service in a refined atmosphere.",
+  openGraph: {
+    title: "Dining at Chiben Leisure Hotels",
+    description: "Experience exceptional dining at Chiben Leisure Hotels. Mediterranean restaurant, pool bar, and room service in a refined atmosphere.",
+  },
+}
 
 export default function DiningPage() {
   const restaurants = [

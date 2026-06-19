@@ -1,8 +1,18 @@
+import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Users, Presentation, Briefcase, Calendar } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: "Events & Conferences",
+  description: "Host your next event at Chiben Leisure Hotels. Conference facilities for up to 1000 guests, banquet halls, meeting rooms, and full event support services.",
+  openGraph: {
+    title: "Events & Conferences at Chiben Leisure Hotels",
+    description: "Host your next event at Chiben Leisure Hotels. Conference facilities for up to 1000 guests, banquet halls, meeting rooms, and full event support services.",
+  },
+}
 
 export default function EventsPage() {
 

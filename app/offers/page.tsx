@@ -1,9 +1,19 @@
+import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Gift, Percent, Star, Tag } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Offers & Packages",
+  description: "Discover exclusive offers and packages at Chiben Leisure Hotels. Save on luxury stays, special promotions, and seasonal deals.",
+  openGraph: {
+    title: "Offers & Packages at Chiben Leisure Hotels",
+    description: "Discover exclusive offers and packages at Chiben Leisure Hotels. Save on luxury stays, special promotions, and seasonal deals.",
+  },
+}
 
 export default function OffersPage() {
   const offers = [
