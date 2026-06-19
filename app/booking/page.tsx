@@ -85,6 +85,7 @@ export default function BookingPage() {
     check_in_date: string
     check_out_date: string
     room?: { id: number; room_number: string; status: string } | null
+    room_type?: { id: number; name: string } | null
     roomType?: { id: number; name: string } | null
   }
   const [serverBooking, setServerBooking] = useState<ServerBooking | null>(null)
@@ -724,7 +725,7 @@ export default function BookingPage() {
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
                         <p className="text-muted-foreground">Room Type</p>
-                        <p className="font-medium">{selectedRoomData?.name || 'N/A'}</p>
+                        <p className="font-medium">{selectedRoomData?.name || serverBooking?.room_type?.name || serverBooking?.roomType?.name || 'N/A'}</p>
                       </div>
                       <div>
                         <p className="text-muted-foreground">Number of Rooms</p>
@@ -742,7 +743,7 @@ export default function BookingPage() {
                     {/* Booking Details */}
                     <div className="space-y-2 border-t pt-4">
                       <p><strong>Status:</strong> <Badge className="ml-2">{serverBooking.status}</Badge></p>
-                      <p><strong>Total Amount:</strong> ₦{total.toLocaleString()}</p>
+                      <p><strong>Total Amount:</strong> ₦{(total || (serverBooking?.amount ? serverBooking.amount * bookingData.rooms : 0)).toLocaleString()}</p>
                       <p><strong>Check-in:</strong> {formatHotelDate(serverBooking.check_in_date)}</p>
                       <p><strong>Check-out:</strong> {formatHotelDate(serverBooking.check_out_date)}</p>
                     </div>
