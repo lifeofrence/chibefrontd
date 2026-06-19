@@ -23,7 +23,16 @@ export async function POST(request: NextRequest) {
                 body: JSON.stringify(body),
             })
 
-            const data = await response.json()
+            const text = await response.text()
+            let data: any
+            try {
+                data = JSON.parse(text)
+            } catch {
+                return NextResponse.json(
+                    { error: 'Backend returned invalid JSON', details: text.slice(0, 500) },
+                    { status: 502 }
+                )
+            }
 
             if (!response.ok) {
                 // If it's a 404, the endpoint doesn't exist yet on the backend

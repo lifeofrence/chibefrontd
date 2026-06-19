@@ -12,7 +12,16 @@ export async function GET(request: NextRequest) {
             cache: 'no-store',
         })
 
-        const data = await response.json()
+        const text = await response.text()
+        let data: unknown
+        try {
+            data = JSON.parse(text)
+        } catch {
+            return NextResponse.json(
+                { error: 'Backend returned invalid JSON', details: text.slice(0, 500) },
+                { status: 502 }
+            )
+        }
 
         if (!response.ok) {
             return NextResponse.json(

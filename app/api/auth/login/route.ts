@@ -16,7 +16,16 @@ export async function POST(request: Request) {
             body: JSON.stringify({ email, password }),
         })
 
-        const data = await res.json()
+        const text = await res.text()
+        let data: any
+        try {
+            data = JSON.parse(text)
+        } catch {
+            return NextResponse.json(
+                { success: false, message: 'Backend returned invalid JSON', details: text.slice(0, 500) },
+                { status: 502 }
+            )
+        }
 
         if (res.ok && data.token) {
             // Set session cookie with the token

@@ -14,15 +14,28 @@ export async function GET(request: NextRequest) {
             cache: 'no-store',
         })
 
-        const data = await response.json()
+        const text = await response.text()
+        let data: unknown
+        try {
+            data = JSON.parse(text)
+        } catch {
+            console.error('Rooms API non-JSON response:', {
+                status: response.status,
+                body: text.slice(0, 500),
+            })
+            return NextResponse.json(
+                { error: 'Backend returned invalid JSON', details: text.slice(0, 500) },
+                { status: 502 }
+            )
+        }
 
         if (!response.ok) {
             console.error('Rooms API error:', {
                 status: response.status,
-                data: data
+                data,
             })
             return NextResponse.json(
-                { error: data.message || 'Failed to load rooms', details: data },
+                { error: (data as Record<string, unknown>).message as string || 'Failed to load rooms', details: data },
                 { status: response.status }
             )
         }
