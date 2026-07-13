@@ -7,7 +7,7 @@ export async function POST() {
         const token = cookieStore.get('admin_token')?.value
 
         if (token) {
-            const backendUrl = process.env.NEXT_PUBLIC_API_BASE || process.env.NEXT_PUBLIC_API_URL || 'https://backend.chibenhotels.com'
+            const backendUrl = process.env.NEXT_PUBLIC_API_BASE || process.env.NEXT_PUBLIC_API_URL || 'https://backend.chybenhotels.com'
 
             try {
                 await fetch(`${backendUrl}/api/auth/logout`, {
